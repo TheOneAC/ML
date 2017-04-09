@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <queue>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int mx[] = {0,0,-1,1};
+int my[] = {-1,1,0,0};
+int cnt = INT_MAX;
+int dfs(vector<vector<int> > &mp, int x, int y,int step){
+    if(step >= 10)return INT_MAX;
+    int cur_x, cur_y,tmp = INT_MAX;
+    bool flag;
+    for(int i = 0; i< 4; i++){
+        cur_x= x; cur_y = y;
+
+        flag = false;
+        while(true){
+            cur_x = x + mx[i];
+            cur_y = y + my[i];
+            if(cur_x <0 || cur_x >= mp.size())break;
+            if(cur_y < 0 || cur_y >=mp[0].size())break;
+            if(mp[cur_x][cur_y] == 1){
+                if(!flag)break;
+                else{
+                    mp[cur_x][cur_y] = 0;
+                    //dfs(mp, cur_x-mx[i],cur_y-mx[i],step);
+
+                    tmp = min(tmp, 1 + dfs(mp, cur_x-mx[i],cur_y-mx[i],step+1));
+                    mp[cur_x][cur_y] = 1;
+                    break;
+                }
+
+            }
+            else if(mp[cur_x][cur_y] == 3){
+                //cnt = min(cnt, step);
+                return 1;
+            }else flag = true;
+        }
+    }
+    return tmp;
+}
+int main(){
+    fstream in; in.open("input.txt");
+    int w, h;
+    int x, y;
+    vector<vector<int> >mp(21,vector<int>(21,0));
+    while(in >> w >> h){
+        if(!w && !h)break;
+        vector<vector<int> >mp(h,vector<int>(w,0));
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w ; j++){
+                in >> mp[i][j];
+                if(mp[i][j] == 2){
+                    x = i;
+                    y = j;
+                }
+            }
+        }
+        int ans = dfs(mp, x, y, 0);
+        cout << (ans > 10? -1: ans) << endl;
+    }
+    return 0;
+}
+
+
