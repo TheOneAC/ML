@@ -1,4 +1,4 @@
-#!/usr/bin/pthon
+#!/usr/bin/python
 from numpy import *
 import logistic
 
