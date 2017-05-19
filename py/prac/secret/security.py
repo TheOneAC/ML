@@ -7,6 +7,15 @@ from M2Crypto import *
 from M2Crypto.EVP import Cipher  
 from M2Crypto import m2  
 from M2Crypto import util  
+
+enKey = "68b329da9893e34099c7d8ad5cb9c940"
+salt = ""
+from M2Crypto import RSA
+publicKey = './public'
+privateKey = './private'
+RSAPub = RSA.load_pub_key(publicKey)
+RSAPri = RSA.load_key(privateKey)
+
 from configure import enKey,RSAPub, RSAPri, salt
 import  hashlib
 import json
