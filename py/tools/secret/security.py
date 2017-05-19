@@ -32,18 +32,19 @@ class SecurityTools():
 	privateKey = enKey 
 	iv = '\0' * 16
 
-
+	#公钥加密
   	@classmethod
 	def PublicEnRSA(cls, msg):
 		ctxt = cls.rsaPub.public_encrypt(msg, RSA.pkcs1_padding)
 		#ctxt64 = ctxt.encode('base64')
 		#print ('密文:%s'% ctxt64)
 		return ctxt
+	#私钥解密
 	@classmethod
 	def SecretDeRSA(cls, msg):
 		txt = cls.rsaPri.private_decrypt(msg, RSA.pkcs1_padding)
 		return txt
-
+	#私钥签名
 	@classmethod
 	def SecretSign(cls, msg):
 
@@ -55,6 +56,7 @@ class SecurityTools():
 		key = cls.rsaPri
 		result = key.sign(digest,"md5")
 		return result
+	#公钥验证
 	@classmethod
 	def PublicVerify(cls, msg,sign):
 		
@@ -67,14 +69,14 @@ class SecurityTools():
 		cert = cls.rsaPub
 		result = cert.verify(digest, sign, "md5")
 		return result
-
+	#私钥加密
 	@classmethod
 	def MsgSecretSign(cls, msg):
 		ctxtPri = cls.rsaPri.private_encrypt(msg, RSA.pkcs1_padding)
 		#ctxt64_pri = ctxtPri.encode('base64')
 		#print ('密文:%s'% ctxt64_pri)
 		return ctxtPri
-
+	#公钥解密
 	@classmethod
 	def MsgPublicVerify(cls, msg):
 		txtPri = cls.rsaPub.public_decrypt(msg, RSA.pkcs1_padding)
@@ -84,7 +86,7 @@ class SecurityTools():
 
 
 
-	
+	#AES 加密
 	@classmethod
 	def AESEncrypt(cls, data):  
 	  '使用aes_128_ecb算法对数据加密'  
@@ -96,7 +98,8 @@ class SecurityTools():
 	  output = ''  
 	  for i in txt:  
 	    output += '%02X' % (ord(i))  
-	  return output  
+	  return output
+	#AES 解密  
  	@classmethod
 	def AESDecrypt(cls, data):  
 	  '使用aes_128_ecb算法对数据解密'  
@@ -107,52 +110,8 @@ class SecurityTools():
 	  txt = txt + cipher.final()  
 	  del cipher  
 	  return txt
-	'''
-	@classmethod
-	def AES_build_cipher(cls, key, iv, op=ENC):
-		return M2Crypto.EVP.Cipher(alg='aes_128_cbc', key=key, iv=iv, op=op)
-	@classmethod
-	def AESEncrypt(cls, msg):
-		#Decode the key and iv
-		#key = b64decode(key)
-		key = cls.privateKey
-		iv = cls.iv
-		# Return the encryption function
-		#def encrypt(data):
-		cipher = cls.AES_build_cipher(key, iv, DEC)
-		v = cipher.update(msg)
-		v = v + cipher.final()
-		del cipher
-		v = b64encode(v)
-			#return v
-		
-		#print "AES encryption successful\n"
-		#return encrypt(msg)
-		return v
-	@classmethod
-	def AESDecrypt(cls, key,msg, iv=None):
-		#Decode the key and iv
-		key = b64decode(key)
-		if iv is None:
-			iv = '\0' * 16
-		else:
-			iv = b64decode(iv)
-		# Return the decryption function
-		def decrypt(data):
-			data = b64decode(data)
-			cipher = cls.AES_build_cipher(key, iv, DEC)
-			v = cipher.update(data)
-			v = v + cipher.final()
-			del cipher
-			return v
-		#print "AES dencryption successful\n"
-		return decrypt(msg)
-	''' 
-       
-        
-
-
-
+	
+	#hash
 	@classmethod
 	def EnHash(cls, msg): 
 	    hashObj=EVP.MessageDigest("md5") 
