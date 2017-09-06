@@ -34,19 +34,26 @@ def knn_classify(k, labeled_points, new_point):
     return majority_vote(k_nearest_labels)
 
 
-cities = [([-122.3 , 47.53], "Python"),
+cities = [
+    ([-122.3 , 47.53], "Python"),
     ([ -96.85, 32.85], "Java"),
     ([ -89.33, 43.13], "R"),
+    ([-120.3 , 35.53], "Python"),
+    ([ -46.85, 72.85], "Java"),
+    ([ -39.33, 33.13], "R"),
+    ([-234.3 , 87.53], "Python"),
+    ([ -46.85, 72.85], "Java"),
+    ([ -39.33, 53.13], "R"),
     ]
 
 
 for k in [1, 3, 5, 7]:
     num_correct = 0
     for city in cities:
-    location, actual_language = city
-    other_cities = [other_city
-    for other_city in cities
-        if other_city != city]
+        location, actual_language = city
+        other_cities = [other_city
+            for other_city in cities
+            if other_city != city]
         predicted_language = knn_classify(k, other_cities, location)
         if predicted_language == actual_language:
             num_correct += 1
