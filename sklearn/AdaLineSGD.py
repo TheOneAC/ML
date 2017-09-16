@@ -81,5 +81,4 @@ ax.set_xlabel("Epoch")
 ax.set_ylabel("log(Sum-squared-error)")
 ax.set_title('Adaline - Learning rate 0.001')
 
-
 plt.show()
